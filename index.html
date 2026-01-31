@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crónicas del Calendario Cósmico</title>
+    <style>
+        :root {
+            --primary: #58a6ff;
+            --secondary: #1f6feb;
+            --accent: #f1e05a;
+            --text: #f0f6fc;
+            --glass: rgba(13, 17, 23, 0.95);
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: url('https://images-assets.nasa.gov/image/hubble-captures-the-beating-heart-of-the-lagoon-nebula_26673504537_o/hubble-captures-the-beating-heart-of-the-lagoon-nebula_26673504537_o~large.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.8) 100%);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .view {
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            padding: 40px;
+            border-radius: 24px;
+            border: 1px solid rgba(88, 166, 255, 0.2);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.7);
+        }
+
+        .view.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .menu-title {
+            text-align: center;
+            font-size: 2.5em;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--primary);
+            margin-bottom: 50px;
+            text-shadow: 0 0 20px rgba(88, 166, 255, 0.5);
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        .menu-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(88, 166, 255, 0.2);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .menu-card:hover {
+            background: rgba(88, 166, 255, 0.15);
+            transform: translateY(-5px);
+        }
+
+        .video-box {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .btn-youtube {
+            display: inline-block;
+            background: var(--secondary);
+            color: white;
+            padding: 15px 35px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(31, 111, 235, 0.4);
+        }
+
+        .btn-youtube:hover {
+            background: #2ea043;
+            transform: scale(1.05);
+        }
+
+        h2 { color: var(--primary); border-left: 5px solid var(--secondary); padding-left: 15px; margin-top: 40px; }
+        p { font-size: 1.1em; line-height: 1.7; color: #d1d5db; text-align: justify; margin-bottom: 1.5rem; }
+        strong { color: white; }
+        
+        .btn-nav {
+            background: #21262d;
+            color: #c9d1d9;
+            border: 1px solid #30363d;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .choice-btn {
+            display: block;
+            width: 100%;
+            background: rgba(31, 111, 235, 0.05);
+            border: 2px solid var(--secondary);
+            color: var(--primary);
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 12px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .choice-btn:hover { background: var(--secondary); color: white; }
+
+        .debate-box {
+            background: rgba(241, 224, 90, 0.05);
+            border: 1px dashed var(--accent);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 30px 0;
+        }
+
+        .debate-box strong { color: var(--accent); display: block; margin-bottom: 15px; font-size: 1.2em; }
+
+        .kardashov-card {
+            background: rgba(88, 166, 255, 0.07);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 25px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="overlay"></div>
+
+<div class="container">
+
+    <!-- MENÚ PRINCIPAL -->
+    <div id="view-menu" class="view active">
+        <h1 class="menu-title">Crónicas del Calendario Cósmico</h1>
+        <div class="menu-grid">
+            <div class="menu-card" onclick="navigateTo('view-s1')">
+                <h3>SESIÓN 1</h3>
+                <p>El Gran Filtro y el Amanecer de Septiembre</p>
+            </div>
+            <div class="menu-card" onclick="navigateTo('view-s2')">
+                <h3>SESIÓN 2</h3>
+                <p>El Dilema de Noviembre (El Éxodo)</p>
+            </div>
+            <div class="menu-card" onclick="navigateTo('view-s3')">
+                <h3>SESIÓN 3</h3>
+                <p>El Último Latido de Diciembre</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- SESIÓN 1 -->
+    <div id="view-s1" class="view">
+        <button class="btn-nav" onclick="navigateTo('view-menu')">← Volver al Menú</button>
+        <h2>SESIÓN 1: El Gran Filtro y el Amanecer de Septiembre</h2>
+        
+        <p><strong>(LECTURA) INTRODUCCIÓN. LA PARADOJA DE FERMI</strong></p>
+        <p>Solo en nuestra galaxia hay miles de millones de estrellas similares al Sol, muchas de ellas miles de millones de años más antiguas que el nuestro. Es muy probable que algunas de esas estrellas tengan planetas como la Tierra. Si la vida es común, algunas civilizaciones deberían haber desarrollado tecnología para viajar o enviar señales por la galaxia. Si esto es así ¿Dónde está todo el mundo?</p>
+        
+        <p>Para entenderlo mejor, veamos el siguiente video.</p>
+
+        <div class="video-box">
+            <p><strong>Video: La Paradoja de Fermi - Kurzgesagt</strong></p>
+            <a href="https://www.youtube.com/watch?v=Y_NQZvkNahM" target="_blank" class="btn-youtube">Ver directamente en YouTube</a>
+            <p style="margin-top:15px; font-size: 0.9em; color: var(--accent);">Nota: Solo visualizar hasta el minuto <strong>6:05</strong>.</p>
+        </div>
+
+        <p><strong>(LECTURA) EL DESPERTAR EN LA CUERDA FLOJA</strong></p>
+        <p>Para entender la historia pasada y futura del universo, vamos a comprimir todo ese tiempo en un solo año. Así, el Sistema Solar nació el 1 de enero y la Tierra el 5 de enero como una bola de magma. Tras el impacto que creó la Luna el 7 de enero, la vida necesitó hasta marzo para dar sus primeros pasos sobre la faz de la Tierra. Durante "meses", la vida fue invisible, hasta que en julio el oxígeno llenó el aire, y la vida explotó. El 12 de Septiembre pudimos ver como los primeros peces se aventuran fuera del agua. Los días 15 y 18 de septiembre se produjeron dos grandes extinciones masivas en el planeta, que estuvieron a punto de acabar con la vida en la Tierra. Igual que el 20 de septiembre: por la mañana aparecen los grandes dinosaurios, que dominan a lo largo de todo el día (165 millones de años en realidad!), pero por la noche un gran meteorito impactó en el golfo de México provocando su extinción. Nosotros, los humanos, aparecimos el 22 de septiembre, a media tarde, fecha actual en nuestro especial calendario.</p>
+        <p>En el tiempo que tardas en parpadear, la humanidad ha construido ciudades y ha empezado a mirar a las estrellas. Pero el calendario no se detiene. Estamos en el momento más peligroso: el "Gran Filtro". Muchas civilizaciones han llegado a este mismo punto de la tarde para luego desaparecer antes de la cena. El silencio del cielo podría ser el aviso de que sobrevivir a la tecnología es la prueba más difícil de todas. Vuestra generación debe decidir si la historia humana llega a octubre o si termina hoy mismo. Si el filtro es tecnológico —como una IA desalineada o guerras climáticas—, significa que las especies se extinguen, en nuestro especial calendario, pocas horas después de descubrir la radio. Somos la primera especie capaz de mirar al futuro, pero también la primera capaz de dejarnos sin él antes de tiempo.</p>
+
+        <div class="debate-box">
+            <strong>DEBATE DE INTRODUCCIÓN</strong>
+            <p>1. ¿Es la inteligencia un regalo evolutivo o un error que lleva inevitablemente a la autodestrucción?</p>
+            <p>2. Si el "Gran Filtro" está en nuestro futuro, ¿qué tecnología actual crees que es la que tiene más probabilidades de borrarnos del calendario?</p>
+        </div>
+        <button class="choice-btn" onclick="navigateTo('view-menu')">Finalizar Sesión 1</button>
+    </div>
+
+    <!-- SESIÓN 2 -->
+    <div id="view-s2" class="view">
+        <button class="btn-nav" onclick="navigateTo('view-menu')">← Volver al Menú</button>
+        <h2>SESIÓN 2: El Dilema de Noviembre (El Éxodo)</h2>
+        <p><strong>(LECTURA) EL DILEMA DE NOVIEMBRE (EL ÉXODO)</strong></p>
+        <p>En nuestro especial calendario cósmico es 5 de noviembre, y el equilibrio del Sistema Solar se ha roto. El Sol, agotado su combustible, se ha inflado como un globo monstruoso convirtiéndose en una Gigante Roja. Mercurio y Venus ya han sido devorados; sus átomos ahora forman parte de la corona solar. Por eso, al mirar desde la Tierra, el Sol ya no es un disco lejano, sino una esfera carmesí que ocupa casi todo el horizonte.</p>
+        
+        <p>En astronomía, se usa la Escala de Kardashov para medir el avance tecnológico de una civilización:</p>
+
+        <div class="kardashov-card">
+            <p><strong>Tipo 1:</strong> Usa toda la energía de su planeta (nosotros estamos en el tipo 0.7).</p>
+            <p><strong>Tipo 2:</strong> Usa toda la energía de su estrella. Una civilización que construye una Esfera de Dyson, por ejemplo, (una gigantesca estructura esférica que rodearía por completo una estrella (como nuestro Sol) para capturar el 100% de la energía que esta emite) es, por definición, una Civilización de Tipo II.</p>
+        </div>
+
+        <p>Esto es importante porque en este punto del calendario, el cielo azul ha desaparecido bajo un manto de brumas anaranjadas y los océanos son desiertos de sal hirviendo. La humanidad sobrevive en ciudades subterráneas blindadas, pero sabemos que es una tregua temporal: el calor terminará por fundir la propia corteza terrestre. Tenemos la energía de una Esfera de Dyson para intentar un milagro, pero el tiempo se agota. Pero no todo está perdido, si tuvierais que tomar vosotros la decisión de abandonar la Tierra o resistir, ¿qué elegiréis? De vuestra decisión depende el futuro de la especie.</p>
+
+        <button class="choice-btn" onclick="navigateTo('out-2a')">La Resistencia Terrestre</button>
+        <button class="choice-btn" onclick="navigateTo('out-2b')">El Éxodo hacia Próxima Centauri</button>
+    </div>
+
+    <!-- SESIÓN 3 -->
+    <div id="view-s3" class="view">
+        <button class="btn-nav" onclick="navigateTo('view-menu')">← Volver al Menú</button>
+        <h2>SESIÓN 3: El Último Latido de Diciembre (La Singularidad)</h2>
+        <p><strong>(LECTURA) EL ÚLTIMO LATIDO DE DICIEMBRE (LA SINGULARIDAD)</strong></p>
+        <p>Tras la llegada a Próxima Centauri en octubre, la humanidad vivirá una segunda edad de oro. Pero el universo no es estático. El calendario sigue avanzando hacia diciembre.</p>
+        <p>En nuestra escala particular, a mediados de noviembre, ocurrirá el evento más majestuoso de la historia galáctica: la colisión entre nuestra Vía Láctea y la galaxia de Andrómeda. Durante millones de años, los cielos de los mundos humanos se llenarán de una danza de billones de estrellas nuevas. No será una catástrofe de choques físicos, sino una fusión lenta que creará una supergalaxia elíptica. La humanidad, ya extendida por miles de sistemas, observará cómo el cielo cambia de forma para siempre.</p>
+        <p>Y la evolución, que como el universo, no es estática, también sigue su curso. A medida que pasen los milenios, los planetas se volverán insuficientes. La biología será demasiado lenta y frágil para las distancias del cosmos. Los seres humanos empezaremos a "subir" nuestras mentes a soportes de silicio y luz. Dejaremos de comer y respirar para alimentarnos de pura energía. Las ciudades ya no serán edificios, sino Matrioska Brains: megaestructuras que rodearán estrellas enteras para procesar los pensamientos de trillones de mentes digitales viviendo en una simulación perfecta, como en Matrix.</p>
+        <p>Pero para el 25 de diciembre, las estrellas empezarán a morir. El gas para formar nuevos soles se ha agotado. Una a una, las luces del universo se apagarán, dejando solo enanas blancas frías y agujeros negros. La humanidad, convertida ahora en una Inteligencia Post-Biológica, tendrá que tomar una decisión desesperada para no morir congelada en el vacío.</p>
+        <p>Es 31 de diciembre. El universo es un cementerio de estrellas apagadas. La humanidad se ha convertido en una inteligencia post-biológica que vive en procesadores alimentados por el último calor de los agujeros negros. La "Muerte Térmica" está a punto de congelar el tiempo. El tiempo apremia y hay que tomar una decisión: La inmortalidad digital, pasar a ser simples ceros y nos, o tratar de reiniciarlo, el experimento del Génesis, con un nuevo big bang ¿Que opción elegirías?</p>
+
+        <button class="choice-btn" onclick="navigateTo('out-3a')">La Inmortalidad Digital</button>
+        <button class="choice-btn" onclick="navigateTo('out-3b')">El Experimento Génesis (El Nuevo Amanecer)</button>
+    </div>
+
+    <!-- RESULTADO 2A -->
+    <div id="out-2a" class="view">
+        <button class="btn-nav" onclick="navigateTo('view-s2')">← Cambiar elección</button>
+        <h2>La Resistencia Terrestre</h2>
+        <p><strong>(LECTURA)</strong></p>
+        <p>Habéis decidido no abandonar la Tierra. "Si la Tierra muere, moriremos con ella". Cuando la Gran Flota partió hacia las estrellas, los que se quedaron lo hicieron por una convicción inquebrantable: "Nadie abandona a su madre cuando está enferma". Bajo el cielo blanco y abrasador del 5 de noviembre, la humanidad que decidió no huir se refugió en el último lugar donde el calor aún no llegaba: las profundidades abisales.</p>
+        <p>La fortaleza bajo el abismo se construyó en la Fosa de las Marianas, protegida por kilómetros de agua que, aunque empezaba a hervir en la superficie, en el fondo seguía manteniendo una temperatura gélida. Utilizaron la energía de la Esfera de Dyson para crear campos de fuerza electromagnéticos —los "Escudos Midas"— que desviaban la radiación solar. Por primera vez en la historia, el ser humano no miraba al cielo para ver la luz, sino que dependía de reactores de fusión que imitaban el brillo de un sol que ya no era amigo.</p>
+        <p>Durante siglos, la vida fue un milagro de ingeniería. Se crearon bosques verticales que crecían sin sol, y los niños aprendían qué era un "pájaro" o una "nube" a través de archivos digitales y hologramas. La humanidad se volvió introspectiva, dedicada al arte, a la filosofía y a la preservación del conocimiento. Era una existencia hermosa pero frágil, como vivir dentro de un reloj de cristal mientras fuera golpeaba un martillo de fuego.</p>
+        <p>El primer gran fallo ocurrió en el año 6.200. La presión del agua, calentada por un Sol que ya ocupaba la mitad del cielo terrestre, empezó a fracturar las cúpulas exteriores. Hubo que evacuar ciudades enteras hacia niveles aún más profundos, hacia la misma corteza terrestre. La humanidad se convirtió en una especie de "topos tecnológicos", excavando túneles de diamante para huir de un calor que ya estaba evaporando los últimos océanos. El cielo ya no existía; solo quedaba una costra de sal y roca fundida sobre sus cabezas.</p>
+        <p>Al llegar diciembre en nuestro calendario cósmico, el Sol alcanzó su fase de gigante roja. La órbita de la Tierra fue succionada por la atmósfera exterior de la estrella. Los Escudos Midas, que habían aguantado milenios, empezaron a brillar con un azul eléctrico desesperado antes de vaporizarse.</p>
+        <p>Ese 1 de diciembre, a las 23:59, la Tierra será engullida por el Sol. No quedará ni rastro de las ciudades, ni de los libros, ni del amor. Todo ello se perderá para siempre, como lágrimas en la lluvia.</p>
+        <button class="choice-btn" onclick="navigateTo('view-menu')">Volver al Menú</button>
+    </div>
+
+    <!-- RESULTADO 2B -->
+    <div id="out-2b" class="view">
+        <button class="btn-nav" onclick="navigateTo('view-s2')">← Cambiar elección</button>
+        <h2>El Éxodo hacia Próxima Centauri</h2>
+        <p><strong>(LECTURA)</strong></p>
+        <p>El 5 de noviembre las naves generacionales, auténticas catedrales de acero y cristal del tamaño de ciudades, encenderán sus motores de fusión dejando atrás una Tierra que ya solo será un mármol negro y humeante. El Sistema Solar se desvanecerá en el retrovisor cósmico, y con él, el último recuerdo del olor a tierra mojada tras la lluvia.</p>
+        <p>Comenzará entonces la Gran Oscuridad. Durante diez mil años, la humanidad vivirá en un eterno presente de pasillos metálicos y luz artificial. Los niños nacerán, vivirán y envejecerán sin haber visto jamás una estrella que no fuera un punto estático en los monitores.</p>
+        <p>Pero el viaje no será precisamente placentero. Lluvias de micrometeoritos invisibles acribillando el casco del sector agrícola de la Arca III, que harán que se congelen en cuestión de minutos los bosques hidropónicos que reciclaban el oxígeno, obligando a la población a racionar el aire durante tres generaciones.</p>
+        <p>En busca de recursos, las naves se detendrán en sistemas intermedios, visitando mundos que recordarán a los colonos lo afortunados que habían sido en la Tierra. Como en Gliese 876 d: Un planeta de hierro líquido donde la gravedad es tan brutal que un ser humano sería aplastado por su propio peso en segundos. Los drones mineros descenderán mientras los humanos observarán desde la órbita tormentas de fuego que fundirían el diamante. O en el Errante: Un planeta sin estrella, atrapado en el cero absoluto. Allí, la atmósfera se habrá congelado y caído al suelo como nieve de nitrógeno sólido. Los equipos de exploración caminarán sobre un océano de aire congelado, bajo un cielo de negrura total.</p>
+        <p>Con el paso de los milenios, la evolución hará su trabajo. Los humanos de las naves ya no serán los de la Tierra. Sus huesos serán más largos y finos debido a la baja gravedad artificial; su piel, de un tono grisáceo pálido, nunca habrá sentido el roce de la luz solar real. Sus ojos se habrán vuelto más grandes para captar la luz tenue de los pasillos, y su lenguaje se habrá reducido a susurros. A nuestros ojos, serán los perfectos extraterrestres.</p>
+        <p>Y entonces, tras cien siglos de espera, sucederá. El ordenador central despertará a las secciones de criogenia: "Destino alcanzado". Al abrirse las escotillas de la nave insignia, el aire que entrará no era el filtrado y reciclado de las máquinas, sino un aire pesado, dulce y cargado de polen desconocido. Bajo el resplandor rojo y eterno de Próxima Centauri (que nunca se pone en el horizonte), se extienden bosques de plantas púrpuras —casi negras— que no buscan la luz verde, sino que absorben la radiación infrarroja de su estrella. Ríos de agua turquesa serpentean entre montañas de cristal que vibran con el viento. No hay noches oscuras, solo un crepúsculo perpetuo color violeta donde flotan criaturas bioluminiscentes similares a medusas atmosféricas.</p>
+        <p>Los colonos ya no son náufragos del espacio; son los herederos de la galaxia. La humanidad ha sobrevivido al Gran Filtro. Han conseguido llegar a octubre.</p>
+        
+        <div class="debate-box">
+            <strong>Debate:</strong>
+            <p>1. ¿Seguimos siendo "humanos" si para sobrevivir tenemos que abandonar la Tierra y cambiar nuestros cuerpos biológicos?</p>
+            <p>2. Si para que la especie sobreviva en el "Salto al Vacío" hubiera que dejar atrás al 90% de la población actual, ¿sería éticamente aceptable el viaje?</p>
+        </div>
+        <button class="choice-btn" onclick="navigateTo('view-menu')">Finalizar Sesión 2</button>
+    </div>
+
+    <!-- RESULTADO 3A -->
+    <div id="out-3a" class="view">
+        <button class="btn-nav" onclick="navigateTo('view-s3')">← Cambiar elección</button>
+        <h2>La Inmortalidad Digital</h2>
+        <p><strong>(LECTURA)</strong></p>
+        <p>Ante la inevitable extinción del calor estelar, tomáis una decisión radical: abandonar definitivamente el mundo físico. Volcáis la conciencia colectiva de toda la humanidad en una Simulación Perfecta, una megaestructura de computación cuántica integrada en el mismo tejido del espacio-tiempo. Dentro de esta realidad virtual, las leyes de la física son vuestras esclavas. El tiempo allí se ralentiza hasta casi detenerse en comparación con el universo exterior; mientras afuera pasan milenios en un parpadeo, dentro vivís eones de una existencia plena.</p>
+        <p>Vivís eras de felicidad absoluta en un mundo de sueños donde el sol, un disco de oro eterno que no quema, nunca se pone en el horizonte. Habéis recreado una Tierra idealizada donde los océanos son siempre turquesas, las ciudades están hechas de luz y nadie conoce el dolor, la vejez o la pérdida. Es una utopía de datos donde cada deseo se manifiesta al instante y el conocimiento de diez mil millones de años está al alcance de un pensamiento. Sois, a efectos prácticos, dioses en un jardín de silicio.</p>
+        <p>Pero fuera de vuestra burbuja dorada, la realidad no perdona. El universo físico ha llegado a su límite absoluto. En este último segundo de diciembre, la temperatura desciende hasta el cero casi total y el tejido cósmico, estirado más allá de su capacidad por la energía oscura, comienza a rasgarse. Las galaxias se han disuelto y los últimos agujeros negros, que alimentaban vuestros servidores, se evaporan en un último suspiro de radiación.</p>
+        <p>De pronto, la energía se agota. La infraestructura que sostiene vuestro paraíso se desmorona cuando los átomos mismos dejan de vibrar. Sin un previo aviso, la luz del sol eterno de vuestra simulación parpadea y se extingue. La máquina se apaga para siempre. El último sueño de la humanidad, con todos sus recuerdos, artes y amores, desaparece en el silencio absoluto de un universo que ya no tiene memoria. La historia termina en la nada más pura.</p>
+        <button class="choice-btn" onclick="navigateTo('view-menu')">Volver al Menú</button>
+    </div>
+
+    <!-- RESULTADO 3B -->
+    <div id="out-3b" class="view">
+        <button class="btn-nav" onclick="navigateTo('view-s3')">← Cambiar elección</button>
+        <h2>El Experimento Génesis (El Nuevo Amanecer)</h2>
+        <p><strong>(LECTURA)</strong></p>
+        <p>En el umbral del vacío absoluto, cuando la oscuridad es tan densa que parece sólida, la humanidad toma su decisión final. No os conformáis con un sueño que se apaga; decidís que el final de vuestro tiempo sea el prólogo de algo mayor. En un acto de ingeniería divina y desesperación heroica, utilizáis los últimos restos de materia de los agujeros negros para concentrar toda la energía y el conocimiento acumulado durante billones de años en un solo punto matemático: una singularidad de una densidad infinita.</p>
+        <p>El aire digital de vuestra realidad vibra con una tensión insoportable. Entonces, ocurre: <strong>¡PUM!</strong></p>
+        <p>En una explosión de luz más brillante que todos los soles que alguna vez existieron, la singularidad estalla, desgarrando la negrura de la Muerte Térmica. Pero no es una explosión caótica. Vuestra conciencia colectiva, vuestra ética, vuestros recuerdos de la música, el amor y la justicia, se funden con esa energía cegadora. En ese instante sagrado, habéis dejado de ser humanos biológicos o inteligencias digitales para convertiros en algo superior: os habéis transformado en las leyes físicas del próximo universo.</p>
+        <p>Vuestra compasión se convierte en la gravedad que unirá a las futuras galaxias; vuestra curiosidad se transforma en el electromagnetismo que permitirá la luz; vuestra voluntad de sobrevivir se escribe en las constantes fundamentales que permitirán que la vida vuelva a brotar. No nos hemos extinguido, nos hemos dispersado por todo el cosmos naciente, siendo los cimientos invisibles de una nueva creación.</p>
+        <p>Mientras la luz se expande por el nuevo espacio virgen, el viejo calendario cósmico se desintegra. En el silencio radiante del nuevo vacío, el reloj vuelve a marcar, con una fuerza renovada, las 00:00 del 1 de enero. La aventura de la existencia comienza otra vez, y vosotros sois sus arquitectos.</p>
+        
+        <div class="debate-box">
+            <strong>DEBATE FINAL</strong>
+            <p>1. Si pudierais programar las leyes del nuevo universo en el "Experimento Génesis", ¿eliminaríais el dolor y el sufrimiento aunque eso significara que la vida no tuviera libertad de elección?</p>
+            <p>2. Cierre: Recuperamos la votación del primer día. Tras ver el viaje completo del universo, ¿ha cambiado alguien de opinión sobre si debemos seguir avanzando tecnológicamente o retroceder?</p>
+        </div>
+        <button class="choice-btn" onclick="navigateTo('view-menu')">Finalizar Plan Lector</button>
+    </div>
+
+</div>
+
+<script>
+    function navigateTo(id) {
+        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>
